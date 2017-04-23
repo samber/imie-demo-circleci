@@ -13,7 +13,8 @@ dependencies:
     - "~/.npm"
   override:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker build -t $IMAGE_BRANCH -t $IMAGE_COMMIT .
+    - docker build -t $IMAGE_BRANCH .
+    - docker build -t $IMAGE_COMMIT .
     - docker images
 
 test:
