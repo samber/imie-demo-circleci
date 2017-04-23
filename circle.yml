@@ -1,0 +1,28 @@
+machine:
+  node:
+    version: 7.4
+  services:
+    - docker
+  environment:
+    IMAGE_BRANCH: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+    IMAGE_COMMIT: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH$CIRCLE_TAG
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+    - "~/.npm"
+
+  override:
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker build -t $IMAGE_BRANCH -t $IMAGE_COMMIT .
+
+test:
+  override:
+    - echo "ok"
+
+deployment:
+  production:
+    branch: /.*/
+    commands:
+      - docker push $IMAGE_BRANCH
+      - docker push $IMAGE_COMMIT
