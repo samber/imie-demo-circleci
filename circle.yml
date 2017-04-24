@@ -20,6 +20,7 @@ dependencies:
 test:
   override:
     - echo "ok"
+    - exit 1
 
 deployment:
   production:
